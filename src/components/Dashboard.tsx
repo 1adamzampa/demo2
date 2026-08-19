@@ -24,9 +24,12 @@ export function Dashboard() {
         />
         <Reveal>
           <div className="mt-14 overflow-hidden rounded-3xl border border-white/10 bg-[#0a0f17]/90 shadow-2xl">
+            <div className="border-b border-white/10 bg-cyan/5 px-5 py-2.5 text-center">
+              <span className="text-xs font-medium text-cyan/80">Demonstration interface — sample data</span>
+            </div>
             <div className="flex flex-col border-b border-white/10 sm:flex-row">
               <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4 sm:w-56 sm:border-b-0 sm:border-r">
-                <img src="/ChatGPT_Image_Aug_2,_2026,_11_51_44_PM.png" alt="AIO Matrix" className="h-8 w-8 rounded-lg object-cover" />
+                <img src="/logo-cropped.png" alt="AIO Matrix" className="h-8 w-8 rounded-lg object-contain" />
                 <span className="text-sm font-semibold text-white">AIO Matrix</span>
               </div>
               <div className="flex gap-1 overflow-x-auto px-3 py-3 text-xs text-white/50">

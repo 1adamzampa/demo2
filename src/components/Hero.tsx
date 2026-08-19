@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { MagneticButton } from './primitives';
 
 const phrases = ['Website visibility', 'Local search presence', 'AI discovery', 'Customer conversations'];
@@ -35,11 +36,53 @@ const snippets = [
   { code: 'New Leads\n127 ↑', top: '70%', right: '3%', delay: 0.8 },
 ];
 
+const socialProofCategories = ['Hospitality', 'Healthcare', 'Real Estate', 'Restaurants', 'Home Services', 'Professional Services'];
+
 export function Hero() {
   const typed = useTypewriter();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, [videoLoaded]);
 
   return (
     <section id="home" className="relative min-h-screen overflow-hidden pt-32 pb-20">
+      {/* Background video */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="none"
+          poster="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+          onLoadedData={() => setVideoLoaded(true)}
+          className="h-full w-full object-cover opacity-30"
+        >
+          <source
+            src="https://cdn.coverr.co/videos/coverr-digital-network-of-data-connections-1080p/1080p.mp4"
+            type="video/mp4"
+          />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/80 via-ink/70 to-ink" />
+      </div>
+
       {/* Floating code snippets */}
       {snippets.map((s, i) => (
         <motion.div
@@ -105,9 +148,28 @@ export function Hero() {
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </MagneticButton>
-          <MagneticButton href="#platform" variant="ghost" className="w-full sm:w-auto">
-            Explore the Platform
-          </MagneticButton>
+          <Link to="/services" className="w-full sm:w-auto">
+            <span className="group relative inline-flex w-full items-center justify-center gap-2 rounded-2xl glass px-7 py-3.5 text-sm font-semibold text-white/90 transition-colors hover:text-white sm:w-auto">
+              Explore the Platform
+            </span>
+          </Link>
+        </motion.div>
+
+        {/* Honest social proof */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.55 }}
+          className="mt-8"
+        >
+          <p className="text-sm font-medium text-white/50">Built for businesses ready to be found, trusted, and chosen.</p>
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+            {socialProofCategories.map((cat) => (
+              <span key={cat} className="rounded-full glass px-3.5 py-1.5 text-xs text-white/55">
+                {cat}
+              </span>
+            ))}
+          </div>
         </motion.div>
 
         {/* Stats */}
@@ -115,7 +177,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="mx-auto mt-20 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4"
+          className="mx-auto mt-16 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4"
         >
           {[
             { v: '92%', l: 'Visibility score' },
@@ -132,9 +194,7 @@ export function Hero() {
       </div>
 
       {/* Scroll indicator */}
-      <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce"
-      >
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
         <div className="flex h-9 w-5 items-start justify-center rounded-full border border-white/20 p-1">
           <span className="h-1.5 w-1 rounded-full bg-white/60" />
         </div>
